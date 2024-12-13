@@ -1,0 +1,390 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Earthquake</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Rubik:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static "user/lib/animate/animate.min.css" %}" rel="stylesheet">
+    <link href="{% static "user/lib/owlcarousel/assets/owl.carousel.min.css" %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static "user/css/bootstrap.min.css" %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static "user/css/style.css" %}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark px-0">
+        <div class="row g-0 d-none d-lg-flex">
+            <div class="col-lg-6 ps-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center text-white">
+                    <span>Follow Us:</span>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-end">
+                <div class="h-100 topbar-right d-inline-flex align-items-center text-white py-2 px-5">
+                    <span class="fs-5 fw-bold me-2"><i class="fa fa-phone-alt me-2"></i>Call Us:</span>
+                    <span class="fs-5 fw-bold">+91 8555 8879 86</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-0 pe-5">
+        <a href="index.html" class="navbar-brand ps-5 me-0">
+            <h1 class="text-white m-0">Earthquake Prediction</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{% url 'user_dashboard' %}" class="nav-item nav-link ">Dashboard</a>
+                <a href="{% url 'user_profile' %}" class="nav-item nav-link">User Profile</a>
+                <a href="{% url 'Classification' %}" class="nav-item nav-link active">Prediction</a>
+                <a href="{% url 'user_feedback' %}" class="nav-item nav-link">Feedback</a>
+            </div>
+            <a href="{% url 'user_login' %}" class="btn btn-primary px-3 d-none d-lg-block">Logout</a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="display-3 text-white animated slideInRight">Prediction Result</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb animated slideInRight mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'Classification' %}">Prediction </a></li>
+                    
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Contact Start -->
+    <style>
+        .hover-container {
+            transition: transform 0.2s;
+            margin: 0; /* Remove any margin */
+        }
+        .hover-container:hover {
+            transform: scale(1.05);
+        }
+        .details-container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            height: 380px;
+            text-align: center;
+        }
+        .graph-container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            height: 380px;
+        }
+    </style>
+    
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+    
+    <div class="container mt-5" style="text-align:center;">
+        <h1>Prediction Result</h1>
+        {% if prediction_result is not None %}
+            {% if prediction_result == 0 %}
+                <p style="color:green; font-weight:bold; font-size:1.5em;">Earthquake is not detected.</p>
+            {% else %}
+                <p style="color:red; font-weight:bold; font-size:1.5em;">Earthquake is detected.</p>
+            {% endif %}
+        {% else %}
+            <p>No prediction available.</p>
+        {% endif %}
+
+        <div class="row mt-4">
+            <div class="col-md-6 hover-container">
+                <div class="graph-container">
+                    <h2>Model Accuracy</h2>
+                    <canvas id="lineChart" width="550" height="300" data-accuracy="{{ model_details.accuracy|safe }}"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 hover-container">
+                <div class="details-container">
+                    <h2>Model Details</h2>
+                    <br>
+                    {% if model_details %}
+                        <table style="width:100%; font-size:1.2em; font-weight:bold; border-collapse: collapse;">
+                            <tr>
+                                <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ddd;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parameter</strong></th>
+                                <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ddd;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value</strong></th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Name:</strong></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ model_details.name }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Accuracy:</strong></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ model_details.accuracy }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Precision:</strong></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ model_details.precision }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>F1 Score:</strong></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ model_details.f1_score }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Recall:</strong></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ model_details.recall }}</td>
+                            </tr>
+                        </table>
+                    {% else %}
+                        <p>No model details available.</p>
+                    {% endif %}
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="note mt-4" style="font-size:1.1em;">
+            <p><strong>Note:</strong> The prediction results and model details are based on the latest data processed by our system. For the most accurate and up-to-date information, please ensure your data inputs are correct and consistent.</p>
+        </div>
+    </div>
+
+    
+    <script>
+        // Get the canvas element
+        var accuracyPercentage = document.getElementById('lineChart').getAttribute('data-accuracy');
+        accuracyPercentage = parseFloat(accuracyPercentage);
+    
+        // Create the chart
+       
+                // Sample data for the line chart
+                var data = {
+                  labels: ['0','100'], // X-axis labels as epochs
+                  datasets: [{
+                      label: "{{ model_name|safe }}", // Label for the dataset
+                      data: [0], // Placeholder accuracy values
+                      fill: false,
+                      borderColor: "rgb(75, 192, 192)",
+                      lineTension: 0.1
+                  }]
+              };
+          
+              // Populate data with accuracy percentage
+              for (var i = 0; i <= 30; i += 5) {
+                  data.datasets[0].data.push(accuracyPercentage); // Push the same accuracy value for all x-axis points
+              }
+          
+              // Configuration options
+              var options = {
+                  scales: {
+                      xAxes: [{
+                          scaleLabel: {
+                              display: true,
+                              labelString: 'Epochs' // X-axis label
+                          }
+                      }],
+                      yAxes: [{
+                          scaleLabel: {
+                              display: true,
+                              labelString: 'Accuracy' // Y-axis label
+                          },
+                          ticks: {
+                              beginAtZero: true
+                          }
+                      }]
+                  }
+              };
+          
+              // Get the canvas element
+              var ctx = document.getElementById('lineChart').getContext('2d');
+          
+              // Create the line chart
+              var lineChart = new Chart(ctx, {
+                  type: 'line',
+                  data: data,
+                  options: options
+              });
+          </script> 
+    
+    <!-- Contact End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Our Office</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>L.B Nagar Metro Statrion Pillar No A1662, Siris Road, Snehapuri colony, Hyderabad-74</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+91 8555 8879 86</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@codebook.in</p>
+                    <div class="d-flex pt-3">
+                        <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                                class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                                class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <a class="btn btn-link" href="{% url 'user_dashboard' %}">User Dashboard</a>
+                    <a class="btn btn-link" href="{% url 'user_profile' %}">User Profile</a>
+                    <a class="btn btn-link" href="{% url 'Classification' %}">Prediction</a>
+                    <a class="btn btn-link" href="{% url 'user_feedback' %}">Feedback</a>
+                    
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Have a Query?</h5>
+                    <p class="mb-1">Feel free to ask!</p>
+                    <h6 class="text-light">09:00 am - 07:00 pm</h6>
+                    <p class="mb-1">Saturday</p>
+                    <h6 class="text-light">09:00 am - 12:00 pm</h6>
+                    <p class="mb-1">Sunday</p>
+                    <h6 class="text-light">Closed</h6>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Earthquake</h5>
+                    <p>
+                        An earthquake is a violent and abrupt shaking of the ground, caused by movement between tectonic plates along a fault line in the earth's crust.
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Copyright Start -->
+    <div class="container-fluid copyright bg-dark py-4">
+        <div class="container text-center">
+            
+            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+            <p class="mb-0">Designed By <a class="fw-semi-bold" href="https://codebook.in">Codebook</a> Distributed
+                By: <a href="https://codebook.in">Codebook</a> </p>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+            class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static "user/lib/wow/wow.min.js" %}"></script>
+    <script src="{% static "user/lib/easing/easing.min.js" %}"></script>
+    <script src="{% static "user/lib/waypoints/waypoints.min.js" %}"></script>
+    <script src="{% static "user/lib/owlcarousel/owl.carousel.min.js" %}"></script>
+    <script src="{% static "user/lib/counterup/counterup.min.js" %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static "user/js/main.js" %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous">
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		{% if messages %}
+				{% for message in messages %}
+					{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+						<script>swal({
+								title: "Success!",
+								text: "{{message}}",
+								icon: "success",
+								button: "OK",
+							});
+						</script>
+					
+					{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+						<script>swal({
+								title: "Warning :)",
+								text: "{{message}}",
+								icon: "warning",
+								button: "OK",
+							
+							});
+						</script>
+					{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+						<script>swal({
+								title: "info :)",
+								text: "{{message}}",
+								icon: "info",
+								button: "OK",
+							});
+						</script>
+					{% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+						<script>swal({
+								title: "error :)",
+								text: "{{message}}",
+								icon: "error",
+								button: "OK",
+							});
+						</script>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+</body>
+
+</html>
